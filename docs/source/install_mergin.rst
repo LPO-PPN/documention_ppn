@@ -1,5 +1,5 @@
 Installation de Mergin Maps CE Edition
-===
+=====
 
 .. warning::
 
