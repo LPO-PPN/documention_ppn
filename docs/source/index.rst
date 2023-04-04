@@ -15,6 +15,7 @@ Contents
 
 .. toctree::
 
+   create_rst_docs
    install_mergin
    usage
    api
