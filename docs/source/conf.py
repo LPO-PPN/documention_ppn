@@ -2,9 +2,9 @@
 
 # -- Project information
 
-project = 'Lumache'
-copyright = '2021, Graziella'
-author = 'Graziella'
+project = 'LPO-PPN'
+copyright = '2023, LPO-PPN'
+author = 'LPO-PPN'
 
 release = '0.1'
 version = '0.1.0'
