@@ -2,7 +2,7 @@
 
 # -- Project information
 
-project = 'LPO-PPN'
+project = 'Tutos LPO-PPN'
 copyright = '2023, LPO-PPN'
 author = 'LPO-PPN'
 
@@ -28,8 +28,28 @@ intersphinx_disabled_domains = ['std']
 templates_path = ['_templates']
 
 # -- Options for HTML output
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'sphinx_rtd_theme'
+html_logo = "./_static/Logo_LPO_blanc.png"
+html_static_path = ['_static']
+
+html_theme_options = {
+    "canonical_url": "",
+    "logo_only": False,
+    "display_version": True,
+    "prev_next_buttons_location": "bottom",
+    "style_external_links": False,
+    "style_nav_header_background": "#0087cd",
+    # Toc options
+    "collapse_navigation": True,
+    "sticky_navigation": True,
+    "navigation_depth": 4,
+    "includehidden": True,
+    "titles_only": False,
+}
+
+pygments_style = 'sphinx'
 
 # -- Options for EPUB output
 epub_show_urls = 'footnote'
