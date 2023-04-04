@@ -16,7 +16,11 @@ Contents
 .. toctree::
 
    create_rst_docs
-   install_mergin
+   geonature
+   mergin_maps
+   geonature_rnf
+   geonature_admin
+   mergin_maps_admin
    usage
    api
 
