@@ -15,5 +15,6 @@ Contents
 
 .. toctree::
 
+   install_mergin
    usage
    api
