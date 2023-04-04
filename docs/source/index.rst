@@ -19,3 +19,9 @@ Contents
    install_mergin
    usage
    api
+
+Contributeurs :
+---------------
+
+* `Maxime Toma (LPO SEP) <https://github.com/maximetoma>`_
+* `Marine Teneur (LPO SERCO) <https://github.com/marineteneur>`_
