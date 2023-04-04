@@ -22,6 +22,7 @@ Contents
    geonature_rnf
    geonature_admin
    mergin_maps_admin
+   tickets_gn_maxime
    usage
    api
 
