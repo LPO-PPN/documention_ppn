@@ -17,6 +17,7 @@ Contents
 
    create_rst_docs
    geonature
+   qgis
    mergin_maps
    geonature_rnf
    geonature_admin
