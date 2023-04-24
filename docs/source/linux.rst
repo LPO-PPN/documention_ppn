@@ -69,6 +69,7 @@ Gérer les permissions
 ~~~~~~~~~~~~~~~~~~~~~
 
 ::
+
     # CHMOD : Modifie les permissions d'accès à un fichier ou à un répertoire.
     # 2 manières d'écrire : avec ou sans les vaeurs dites octales (= numériques)
     # + : Ajoute une permission // - : Enlève une permission // = : Autorise uniquement l'autorisation indiquée
