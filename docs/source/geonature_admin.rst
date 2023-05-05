@@ -235,13 +235,21 @@ Montée en version GeoNature 2.11.2 vers GeoNature 2.12.2, par @maximetoma
 
   ./install/migration/migration.sh
 
-- Relancer le service
+- Relancer les services
 
 ::
 
   sudo systemctl start geonature
+  sudo systemctl restart geonature-worker
+  sudo systemctl restart usershub
+  sudo systemctl restart taxhub
+
 
 - Le script ``migration.sh`` se charge de déplacer automatiquement les différents fichiers suite à la réorganisation des dossiers (customisation, médias, mobile, configuration centralisée des modules)
+
+.. IMPORTANT::
+
+  ERREUR 403 FORBIDEN sur GeoNature, idem sur version non test ? Du à la configuration apache qui change ? Pas réussi à résoudre sur test en télétravail
 
 5/ Autres
 ~~~~~~~~~
@@ -266,7 +274,7 @@ Pour conserver le bon affichage lors de l'édition des données, renseignez l'an
 
 
 .. NOTE::
-  
+
   NOTA BENE :
   - Il n'est plus nécessaire de rebuilder le frontend ni de recharger GeoNature manuellement à chaque modification de la configuration de GeoNature ou de ses modules
   - Les taches automatisées sont désormais gérées par Celery Beat et installées avec GeoNature. Si vous aviez mis en place des crons pour mettre à jour les profils de taxons (ou les données du module Dashboard, ou les exports planifiés du module Export), supprimez les (dans ``/etc/cron.d/geonature`` ou ``crontab -e``) car ils ne sont plus utiles
