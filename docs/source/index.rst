@@ -25,8 +25,6 @@ Contents
    linux
    tuto_ref_geo_gn
    tickets_gn_maxime
-   usage
-   api
 
 Contributeurs :
 ---------------
