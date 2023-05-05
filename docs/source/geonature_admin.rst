@@ -162,3 +162,82 @@ Montée en version GeoNature 2.10.4 vers GeoNature 2.11.2, par @maximetoma
 ~~~~~~~~~
 
 - RAS – 1.2.1 déjà installée
+
+
+Montée en version GeoNature 2.11.2 vers GeoNature 2.12.2, par @maximetoma
+-------------------------------------------------------------------------
+
+1/ Téléchargement de Export, Dashboard et Monitoring
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Mettre à jour les modules Export en version 1.4.0, Dashboard en version 1.3.0 (ou plus) et Monitoring en version 0.5.0 (ou plus) avec la nouvelle procédure consistant uniquement à télécharger, dézipper et renommer les dossiers des modules et de leur configuration
+
+::
+
+  ...
+
+2/ TaxHub
+~~~~~~~~~
+
+- RAS – 1.11.1 déjà installée
+
+3/ Vue Export de la Synthèse
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- La vue gn_synthese.v_synthese_for_export définissant la structure et le contenu des exports de la Synthèse a été modifiée pour être optimisée. Si vous l'aviez customisée, reportée vos modifications manuellement après la mise à jour de GeoNature
+
+.. IMPORTANT::
+
+  Vérifier que je n'ai rien apporté/modifié sur cette vue
+
+4/ GeoNature
+~~~~~~~~~~~~
+
+- Mettre à jour GeoNature
+
+::
+
+  wget https://github.com/PnX-SI/GeoNature/archive/2.12.2.zip
+  unzip 2.12.2.zip
+  rm 2.12.2.zip
+  mv /home/`whoami`/geonature/ /home/`whoami`/geonature_old/
+  mv GeoNature-2.12.2 /home/`whoami`/geonature/
+  cd geonature
+
+  ./install/migration/migration.sh
+
+- Relancer le service
+
+::
+
+  sudo systemctl start geonature
+
+- Le script ``migration.sh`` se charge de déplacer automatiquement les différents fichiers suite à la réorganisation des dossiers (customisation, médias, mobile, configuration centralisée des modules)
+
+5/ Autres
+~~~~~~~~~
+
+- Il est fortement conseillé d'utiliser la configuration Apache générée par défaut dans ``/etc/apache2/conf-available/geonature.conf`` et de l'inclure dans votre vhost (``/etc/apache2/sites-available/geonature.conf`` et/ou ``/etc/apache2/sites-available/geonature-le-ssl.conf``), en suivant la `documentation dédiée <https://docs.geonature.fr/installation.html#configuration-apache>`_
+- Si vous aviez customisé la page d’accueil de GeoNature en modifiant les composants ``frontend/src/custom/components/introduction/introduction.component.html`` et ``frontend/src/custom/components/footer/footer.component.html`` ceux-ci ont été supprimés au profit de paramètres de configuration. Il vous faut donc déplacer votre customisation dans les paramètres ``TITLE``, ``INTRODUCTION`` et ``FOOTER`` de la nouvelle section ``[HOME]`` de la configuration de GeoNature. Vous pouvez renseigner du code HTML sur plusieurs lignes en le plaçant entre triple quote (``"""<b>Hello</b>"""``).
+- Les paramètres de configuration suivants ont été supprimés et doivent être retirés de votre fichier de configuration (``config/geonature_config.toml``) s’ils sont présents :
+
+  - ``LOGO_STRUCTURE_FILE`` (si vous aviez renommé votre logo, déplacez le dans ``geonature/custom/images/logo_structure.png``)
+  - ``UPLOAD_FOLDER`` (si vous l’aviez déplacé, renommez votre dossier d’upload en attachments et placez-le dans le dossier des médias (``geonature/backend/media/`` par défaut, paramétrable via ``MEDIA_FOLDER``))
+  - ``BASE_DIR``
+
+6/ Occtax et champs additionnels
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Les champs additionnels de type ``bool_radio`` ne sont plus supportés.
+  Si vous utilisiez ce type de widget dans vos champs additionnels d'Occtax, ils seront automatiquement remplacés par un widget de type ``radio``.
+  Vous devez changer le champs ``field_values`` sur le modèle suivant : ``[{"label": "Mon label vrai", "value": true }, {"label": "Mon label faux", "value": false }]``.
+- Les champs de formulaire de type ``radio``, ``select``, ``multiselect`` et ``checkbox``, attendent désormais une liste de dictionnaire ``{value, label}`` (voir doc des champs additionnels) (#2214)
+  La rétrocompatibilité avec des listes simples est maintenue, mais vous êtes invités à modifier ces champs dans le backoffice.
+  Pour conserver le bon affichage lors de l'édition des données, renseignez l'ancienne valeur deux fois dans la clé ``value`` et la clé ``label``.
+
+
+.. NOTE::
+  NOTA BENE :
+  - Il n'est plus nécessaire de rebuilder le frontend ni de recharger GeoNature manuellement à chaque modification de la configuration de GeoNature ou de ses modules
+  - Les taches automatisées sont désormais gérées par Celery Beat et installées avec GeoNature. Si vous aviez mis en place des crons pour mettre à jour les profils de taxons (ou les données du module Dashboard, ou les exports planifiés du module Export), supprimez les (dans ``/etc/cron.d/geonature`` ou ``crontab -e``) car ils ne sont plus utiles
+
