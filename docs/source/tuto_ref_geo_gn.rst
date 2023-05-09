@@ -133,7 +133,7 @@ Pour gain de performence, nous allons désactiver le trigger lourd de SYNTHESE
     ALTER TABLE ref_geo.l_areas DISABLE TRIGGER tri_insert_cor_area_synthese;
 
     -- Importer les sites
-    INSERT INTO ref_geo.l_areas (id_area, id_type, area_name, area_code, geom, source, comment, enable) SELECT id_area, id_type, area_name, area_code, geom, source, comment, enable FROM gn_imports.new_ref_geo_mai_2023;
+    INSERT INTO ref_geo.l_areas (id_area, id_type, area_name, area_code, geom, source, comment, enable) SELECT id_area::int, id_type::int, area_name, area_code, geom, source, comment, enable::bool FROM gn_imports.new_ref_geo_mai_2023;
 
     -- Redéfinir la séquence de l'id_area
     do $$ declare maxid int; begin select max(id_area) from ref_geo.l_areas into maxid; execute 'ALTER SEQUENCE ref_geo.l_areas_id_area_seq RESTART with '|| maxid; end; $$ language plpgsql;
