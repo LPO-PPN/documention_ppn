@@ -299,6 +299,8 @@ Pour conserver le bon affichage lors de l'édition des données, renseignez l'an
  .. NOTE::
 
   Dans VSCode, ``Ctrl + Maj + F`` pour vérifier les fichiers concernés par `"type_widget": "datalist"`, puis ``Ctrl + Maj + H`` pour remplacer par `"type_widget": "dataset"`.
+  
+.. image:: _static/gnadmin_211_212.jpg
 
 8/ NOTA BENE
 ~~~~~~~~~~~~
