@@ -296,7 +296,7 @@ Pour conserver le bon affichage lors de l'édition des données, renseignez l'an
     "module_code": "__MODULE.MODULE_CODE",
   },
   
- .. NOTE::
+.. NOTE::
 
   Dans VSCode, ``Ctrl + Maj + F`` pour vérifier les fichiers concernés par `"type_widget": "datalist"`, puis ``Ctrl + Maj + H`` pour remplacer par `"type_widget": "dataset"`.
   
