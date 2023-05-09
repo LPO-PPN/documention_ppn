@@ -182,6 +182,9 @@ Montée en version GeoNature 2.11.2 vers GeoNature 2.12.2, par @maximetoma
   mv /home/`whoami`/gn_module_monitoring /home/`whoami`/gn_module_monitoring_old
   mv /home/`whoami`/gn_module_monitoring-0.5.0 /home/`whoami`/gn_module_monitoring
   cp ~/gn_module_monitoring_old/config/conf_gn_module.toml  ~/geonature/config/monitorings_config.toml
+  cp -RT ~/gn_module_monitoring_old/contrib/  ~/gn_module_monitoring/contrib/
+  # ATTENTION ---> Vérifier que le README et le .git on été copiés ! Important pour la dépot GitHub SEP
+  rsync -av /home/`whoami`/gn_module_monitoring_old/config/monitoring/ /home/`whoami`/gn_module_monitoring/config/monitoring/ --exclude=generic
   
   # EXPORTS
   cd
@@ -235,7 +238,11 @@ Montée en version GeoNature 2.11.2 vers GeoNature 2.12.2, par @maximetoma
 
   ./install/migration/migration.sh
 
-- Relancer les services
+  # Lancer la commande pour rafraichir les images monitorings
+  source backend/venv/bin/activate
+  geonature monitorings process_img
+
+- Relancer les services (optionnel)
 
 ::
 
@@ -250,11 +257,13 @@ Montée en version GeoNature 2.11.2 vers GeoNature 2.12.2, par @maximetoma
 .. IMPORTANT::
 
   ERREUR 403 FORBIDEN sur GeoNature, idem sur version non test ? Du à la configuration apache qui change ? Pas réussi à résoudre sur test en télétravail
+  /// RAS sur la version PROD (ONLINE)
 
 5/ Autres
 ~~~~~~~~~
 
 - Il est fortement conseillé d'utiliser la configuration Apache générée par défaut dans ``/etc/apache2/conf-available/geonature.conf`` et de l'inclure dans votre vhost (``/etc/apache2/sites-available/geonature.conf`` et/ou ``/etc/apache2/sites-available/geonature-le-ssl.conf``), en suivant la `documentation dédiée <https://docs.geonature.fr/installation.html#configuration-apache>`_
+- Les taches automatisées sont désormais gérées par Celery Beat et installées avec GeoNature. Si vous aviez mis en place des crons pour mettre à jour les profils de taxons (ou les données du module Dashboard, ou les exports planifiés du module Export), supprimez les (dans /etc/cron.d/geonature ou crontab -e) car ils ne sont plus utiles
 - Si vous aviez customisé la page d’accueil de GeoNature en modifiant les composants ``frontend/src/custom/components/introduction/introduction.component.html`` et ``frontend/src/custom/components/footer/footer.component.html`` ceux-ci ont été supprimés au profit de paramètres de configuration. Il vous faut donc déplacer votre customisation dans les paramètres ``TITLE``, ``INTRODUCTION`` et ``FOOTER`` de la nouvelle section ``[HOME]`` de la configuration de GeoNature. Vous pouvez renseigner du code HTML sur plusieurs lignes en le plaçant entre triple quote (``"""<b>Hello</b>"""``).
 - Les paramètres de configuration suivants ont été supprimés et doivent être retirés de votre fichier de configuration (``config/geonature_config.toml``) s’ils sont présents :
 
@@ -272,9 +281,29 @@ Vous devez changer le champs ``field_values`` sur le modèle suivant : ``[{"labe
 La rétrocompatibilité avec des listes simples est maintenue, mais vous êtes invités à modifier ces champs dans le backoffice.
 Pour conserver le bon affichage lors de l'édition des données, renseignez l'ancienne valeur deux fois dans la clé ``value`` et la clé ``label``.
 
+7/ Monitoring et liste des JDD
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- L'utilisation du widget ``datalist`` pour les jeux de données est à proscrire. Si vous utilisez ce composant dans vos fichiers de configuration, il faut les modifier en remplaçant par le widget ``dataset``.
+
+::
+
+  "id_dataset": {
+    "type_widget": "dataset",
+    "attribut_label": "Jeu de données",
+    "type_util": "dataset",
+    "required": true,
+    "module_code": "__MODULE.MODULE_CODE",
+  },
+
+8/ NOTA BENE
+~~~~~~~~~~~~
 
 .. NOTE::
 
-  NOTA BENE :
-  - Il n'est plus nécessaire de rebuilder le frontend ni de recharger GeoNature manuellement à chaque modification de la configuration de GeoNature ou de ses modules
-  - Les taches automatisées sont désormais gérées par Celery Beat et installées avec GeoNature. Si vous aviez mis en place des crons pour mettre à jour les profils de taxons (ou les données du module Dashboard, ou les exports planifiés du module Export), supprimez les (dans ``/etc/cron.d/geonature`` ou ``crontab -e``) car ils ne sont plus utiles
+  NOTA BENE : Il n'est plus nécessaire de rebuilder le frontend ni de recharger GeoNature manuellement à chaque modification de la configuration de GeoNature ou de ses modules
+
+
+.. NOTE::
+
+  NOTA BENE : Les taches automatisées sont désormais gérées par Celery Beat et installées avec GeoNature. Si vous aviez mis en place des crons pour mettre à jour les profils de taxons (ou les données du module Dashboard, ou les exports planifiés du module Export), supprimez les (dans ``/etc/cron.d/geonature`` ou ``crontab -e``) car ils ne sont plus utiles
