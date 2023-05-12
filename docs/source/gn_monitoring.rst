@@ -362,10 +362,11 @@ Pour définir ses propres variables (ou modifier des variables déjà présentes
 
     <details>
     <summary><a>Dépliez pour afficher tous les types de variable</a></summary>
+    <br>
 
 * **texte** : une variable facultative
 
-::
+.. code-block:: json
 
     nom_contact": {
         "type_widget": "text",
@@ -374,7 +375,7 @@ Pour définir ses propres variables (ou modifier des variables déjà présentes
 
 * **entier** : exemple avec un numéro du passage compris entre 1 et 2 est obligatoire
 
-::
+.. code-block:: json
 
     "num_passage": {
         "type_widget": "number",
@@ -386,7 +387,7 @@ Pour définir ses propres variables (ou modifier des variables déjà présentes
 
 * **utilisateur** : choix de plusieurs noms d'utilisateurs dans une liste
 
-::
+.. code-block:: json
 
     "observers": {
         "attribut_label": "Observateurs",
@@ -399,7 +400,7 @@ Il est important d'ajouter ``"type_util": "user",``.
 
 * **nomenclature** : un choix obligatoire parmi une liste définie par un type de nomenclature
 
-::
+.. code-block:: json
 
     "id_nomenclature_nature_observation": {
         "type_widget": "nomenclature",
@@ -415,7 +416,7 @@ Il est important d'ajouter ``"type_util": "nomenclature",``.
 
 * **liste** : une liste déroulante simple, non basée sur une nomenclature
 
-::
+.. code-block:: json
 
     "rain": {
         "type_widget": "select",
@@ -428,7 +429,7 @@ Il est possible de définir une valeur par défaut pré-selectionnée avec le pa
 
 * **radio** : bouton radio pour un choix unique parmi plusieurs possibilités
 
-::
+.. code-block:: json
 
     "beginner": {
         "type_widget": "radio",
@@ -438,7 +439,7 @@ Il est possible de définir une valeur par défaut pré-selectionnée avec le pa
 
 * **taxonomie** : une liste de taxons
 
-::
+.. code-block:: json
 
     "cd_nom": {
         "type_widget": "taxonomy",
@@ -454,7 +455,7 @@ Il est important d'ajouter ``"type_util": "taxonomy",``.
 
 * **dataset** : une liste de jeux de données
 
-::
+.. code-block:: json
 
     "id_dataset": {
         "type_widget": "dataset",
@@ -473,8 +474,49 @@ Il est important d'ajouter ``"type_util": "dataset",``.
     </details>
     <br>
 
+- **Les datalists**
+
 - **Les variables dynamiques**
 
+- **Redéfinir les champs génériques**
+
+Il se peut que l'on veut rendre obligatoire ou cacher certain champs génériques qui se rajoutent automatiquement en plus de nos champs spécifiques.
+
+On rajoutera cet élément dans notre variable ``specific`` et cet élément sera mis à jour :
+
+* Changer le label d'un élément et le rendre visible et obligatoire
+
+  .. code-block:: json
+
+        "visit_date_max": {
+            "attribut_label": "Date de fin de visite",
+            "hidden": false,
+            "required": true
+        }
+
+* Donner une valeur par défaut à une nomenclature et cacher l'élément
+
+  Dans le cas où la variable ``type_widget`` est redéfinie, il faut redéfinir toutes les variables.
+
+  .. code-block:: json
+
+        "id_nomenclature_type_site": {
+            "type_widget": "text",
+            "attribut_label": "Type site",
+            "type_util": "nomenclature",
+            "value": {
+                "code_nomenclature_type": "TYPE_SITE",
+                "cd_nomenclature": "OEDIC"
+            },
+            "hidden": true
+        }
+
+  Il est important d'ajouter ``"type_util": "nomenclature",``.
+
+  Pour renseigner la valeur de la nomenclature, on spécifie :
+    * le type de nomenclature ``"code_nomenclature_type"`` (correspond au champs mnemonique du type)
+
+    * le code de la nomenclature ``"cd_nomenclature"``
 
 .. IMPORTANT::
 
