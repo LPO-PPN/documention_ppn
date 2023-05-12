@@ -186,6 +186,11 @@ On peut également définir dans un fichier toutes les nomenclatures qui devront
 
 ¤ Struture type (exemple pour le protocole `Chiro <https://github.com/PnX-SI/protocoles_suivi/tree/master/chiro>`_)
 
+.. raw:: html
+
+   <details>
+   <summary><a>big code</a></summary>
+
 .. code-block:: json
 
     {
@@ -249,6 +254,9 @@ On peut également définir dans un fichier toutes les nomenclatures qui devront
     ]
     }
 
+.. raw:: html
+
+   </details>
 
 Configuration des niveaux
 ~~~~~~~~~~~~~~~~~~~~~~~~~
