@@ -18,7 +18,7 @@ Au sein de ces sous-modules, nous retrouvons un niveaux d'information bien défi
 - **OBSERVATIONS** (espèce, dénombrement) Une observation est composée d'un ou plusieurs détails d'observation
 - *(Facultatif)* **DETAIL DES OBSERVATIONS** Donne un détail à l'observation (permet d'ajouter un niveau supplémentaire dans la hierarchie)
 
-Nous verrons plus en détail ces niveaux dans la partie `Configuration des niveaux <#configuration-des-niveaux>`_
+Nous verrons plus en détail ces niveaux dans la partie `Configuration des niveaux <#id1>`_
 
 .. NOTE::
 
