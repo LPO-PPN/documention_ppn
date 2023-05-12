@@ -95,6 +95,12 @@ Voici quelques exemples ci-dessous :
         }
     }
 
+.. raw:: html
+
+   <details>
+   <summary><a>Cliquez pour afficher tous les exemples</a></summary>
+
+
 ¤ Struture en rajoutant le niveau `Détail de l'observation`
 
 .. code-block:: json
@@ -151,6 +157,11 @@ Voici quelques exemples ci-dessous :
         }
     }
 
+.. raw:: html
+
+   </details>
+   <br>
+
 - **Les Objets du module** ``module.json``
 
 ¤ Struture simple (varaibles obligatoires)
@@ -189,7 +200,7 @@ On peut également définir dans un fichier toutes les nomenclatures qui devront
 .. raw:: html
 
    <details>
-   <summary><a>big code</a></summary>
+   <summary><a>Cliquez pour afficher tout le code</a></summary>
 
 .. code-block:: json
 
@@ -257,6 +268,7 @@ On peut également définir dans un fichier toutes les nomenclatures qui devront
 .. raw:: html
 
    </details>
+   <br>
 
 Configuration des niveaux
 ~~~~~~~~~~~~~~~~~~~~~~~~~
