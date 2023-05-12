@@ -298,15 +298,63 @@ Un certain nombre de champs sont obligatoires à renseigner dans chaque table de
 
 - **Les Détails d'une observation** ``observation_detail.json``
 
-Configuration des exports
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Structure par défaut d'un fichier de niveau (site, visite, observation...)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- **La Vue de synthèse** ``synthese.sql``
+Les variables ``display_properties`` et ``display_list`` sont à définir pour indiquer quelles variables seront affichées (pour la page d'un objet ou pour les listes et dans quel ordre).
 
-- **Paramétrage des exports** ``module.json``
+Si ``display_list`` n'est pas défini, il prend la valeur de ``display_properties``.
+
+Par exemple pour ``site.json``:
+
+.. code-block:: json
+
+  "geometry_type": "Point",
+  "display_properties": [
+    "base_site_name",
+    "base_site_description",
+    "last_visit",
+    "nb_visits"
+  ]
+
+.. image:: _static/gn_monitoring/display_prop.jpg
+    :alt: Rendu de la configuration 1 dans GeoNature
+
+.. code-block:: json
+
+  "geometry_type": "Point",
+  "display_properties": [
+    "base_site_name",
+    "base_site_description",
+    "last_visit",
+    "nb_visits"
+  ],
+  "display_list": [
+    "base_site_name",
+    "last_visit",
+    "nb_visits"
+  ]
+
+.. image:: _static/gn_monitoring/display_prop_list.jpg
+    :alt: Rendu de la configuration 2 dans GeoNature
 
 Définir ses variables dans la configuration des niveaux
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Pour définir ses propres variables (ou modifier des variables déjà présentes -dites génériques-), il faut les inclures dans une liste appelée ``specific`` en dessous des ``display_properties`` ou ``display_list``, comme suit :
+
+.. code-block:: json
+
+  "geometry_type": "Point",
+  "display_properties": [
+    ...
+  ],
+  "display_list": [
+    ...
+  ],
+  "specific": [
+    ...
+  ]
 
 - **Les variables génériques (par défaut)**
 
@@ -314,8 +362,99 @@ Définir ses variables dans la configuration des niveaux
 
 - **Les variables dynamiques**
 
+Configuration des exports
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- **La Vue de synthèse** ``synthese.sql``
+
+- **Paramétrage des exports** ``module.json``
+    Il est possible de configurer des exports (CSV ou PDF).
+
+    **PDF**
+
+    Les fichiers de template (``.html``) et assets (images, style, etc..) pour l'export PDF sont à placer dans le dossier ``<module_code>/exports/pdf/``
+
+    * Dans le fichier de config d'un object (par exemple ``sites_group.json``:
+
+    * ajouter la variable ``export_pdf``:
+
+    ::
+
+        "export_pdf": [
+            {
+                "template": "fiche_aire.html",
+                "label": "Export PDF"
+            }
+        ]
+
+    * Dans les fichiers template on a accès à la variable ``data`` un dictionnaire contenant :
+
+    * ``static_pdf_dir`` : chemin du dossier des assets de l'export pdf
+
+    * ``map_image`` : l'image tirée de la carte leaflet
+
+    * ``monitoring_object.properties``: propriété de l'objet courant
+
+    * La commande ``geonature monitorings process_export_pdf <module_code>`` permet de :
+
+    * placer les fichier de template en ``.html`` (lien symbolique) dans le dossier ``<geonature>/backend/template/modules/monitorings/<module_code>``
+
+    * placer les fchiers d'assets dans le dossier static : ``<geonature>/backend/static/external_assets/monitorings/<module_code>/exports/pdf``
+
+    **CSV**
+
+    les fichiers ``.sql`` qui définissent les vues pour l'export CSV sont placés dans le dossier ``<module_code>/exports/csv/``.
+
+    * Dans le fichier de config du module (``module.json``) ou d'un objet (par exemple ``sites_group.json``) :
+
+    * ajouter la variable ``export_csv``:
+
+    ::
+
+        "export_csv": [
+            { "label": "Format standard CSV", "type":"csv" , "method": "standard" , "filter_dataset": true},
+            { "label": "Format analyses CSV", "type":"csv" , "method": "analyses" }
+        ],
+
+    * Paramètres :
+
+    * label : Nom de l'export
+
+    * method : Nom de la vue sans le code du module
+
+    * filter_dataset (true|false) : Ajoute le filtre des datasets. Dans ce cas il faut que la vue ait un champ ``id_dataset``
+
+    * La commande ``geonature monitorings process_export_csv <module_code>`` permet de :
+
+    * jouer tous les fichiers SQL de ce répertoire
+
+    * les vues doivent être nommées ``v_export_<module_code>_<method>``
+
 Gérer les permissions (<= 0.5.0)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. NOTE::
+
+    Actuellement le CRUVED est implémenté de manière partielle au niveau du module MONITORINGS. Il n'y a actuellement pas de vérification des portées, les droits s'appliquent sur toutes les données. Une refonte du module est en cours à ce sujet.
+
+Si on définit un CRUVED sur un sous-module, alors cela surcouche pour ce sous-module le CRUVED définit au niveau de tout le module Monitorings.
+
+Par défaut les valeurs définies du CRUVED sont :
+
+- `site_group.json` : "cruved": {"C":1, "U":1, "D": 1},
+- `site.json` : "cruved": {"C":1, "U":1, "D": 1},
+- `visit.json` : "cruved": {"C":1, "U":1, "D": 1},
+- `observation.json` : "cruved": {"C":1, "U":1, "D": 1},
+- `observation_detail.json` : "cruved": {"C":1, "U":1, "D": 1},
+
+
+Pour surcoucher les permissions, il faut rajouter la variable cruved dans les fichiers de configuration du module (``site_group.json``, ``site.json``, ...)
+
+::
+
+  "cruved": {"C": 3, "U": 3, "D": 3},
+
+- Pour pouvoir modifier les paramètres d'un module, il faut que le CRUVED de l'utilisateur ait un U=3 pour ce sous-module.
 
 ---------------------------------
 Dépot des projets de sous-modules
