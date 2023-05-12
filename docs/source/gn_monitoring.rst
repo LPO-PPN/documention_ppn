@@ -361,124 +361,343 @@ Pour définir ses propres variables (ou modifier des variables déjà présentes
 .. raw:: html
 
     <details>
-    <summary><a>Dépliez pour afficher tous les types de variable</a></summary>
+    <summary><a>Dépliez pour plus de détails</a></summary>
     <br>
 
-* **texte** : une variable facultative
+Ci-dessous un résumé des types de champs possibles :
+  * **texte** : une variable facultative
 
-.. code-block:: json
+  .. code-block:: json
 
-    nom_contact": {
-        "type_widget": "text",
-        "attribut_label": "Nom du contact"
-    }
+      nom_contact": {
+          "type_widget": "text",
+          "attribut_label": "Nom du contact"
+      }
 
-* **entier** : exemple avec un numéro du passage compris entre 1 et 2 est obligatoire
+  * **entier** : exemple avec un numéro du passage compris entre 1 et 2 est obligatoire
 
-.. code-block:: json
+  .. code-block:: json
 
-    "num_passage": {
-        "type_widget": "number",
-        "attribut_label": "Numéro de passage",
-        "required": true,
-        "min": 1,
-        "max": 2
-    }
+      "num_passage": {
+          "type_widget": "number",
+          "attribut_label": "Numéro de passage",
+          "required": true,
+          "min": 1,
+          "max": 2
+      }
 
-* **utilisateur** : choix de plusieurs noms d'utilisateurs dans une liste
+  * **utilisateur** : choix de plusieurs noms d'utilisateurs dans une liste
 
-.. code-block:: json
+  .. code-block:: json
 
-    "observers": {
-        "attribut_label": "Observateurs",
-        "type_widget": "observers",
-        "type_util": "user",
-        "code_list": "__MODULE.ID_LIST_OBSERVER",
-    },
+      "observers": {
+          "attribut_label": "Observateurs",
+          "type_widget": "observers",
+          "type_util": "user",
+          "code_list": "__MODULE.ID_LIST_OBSERVER",
+      },
 
-Il est important d'ajouter ``"type_util": "user",``.
+  Il est important d'ajouter ``"type_util": "user",``.
 
-* **nomenclature** : un choix obligatoire parmi une liste définie par un type de nomenclature
+  * **nomenclature** : un choix obligatoire parmi une liste définie par un type de nomenclature
 
-.. code-block:: json
+  .. code-block:: json
 
-    "id_nomenclature_nature_observation": {
-        "type_widget": "nomenclature",
-        "attribut_label": "Nature de l'observation",
-        "code_nomenclature_type": "OED_NAT_OBS",
-        "required": true,
-        "type_util": "nomenclature"
-    },
+      "id_nomenclature_nature_observation": {
+          "type_widget": "nomenclature",
+          "attribut_label": "Nature de l'observation",
+          "code_nomenclature_type": "OED_NAT_OBS",
+          "required": true,
+          "type_util": "nomenclature"
+      },
 
-La variable ``"code_nomenclature_type": "OED_NAT_OBS",`` définit le type de nomenclature.
+  La variable ``"code_nomenclature_type": "OED_NAT_OBS",`` définit le type de nomenclature.
 
-Il est important d'ajouter ``"type_util": "nomenclature",``.
+  Il est important d'ajouter ``"type_util": "nomenclature",``.
 
-* **liste** : une liste déroulante simple, non basée sur une nomenclature
+  * **liste** : une liste déroulante simple, non basée sur une nomenclature
 
-.. code-block:: json
+  .. code-block:: json
 
-    "rain": {
-        "type_widget": "select",
-        "required": true,
-        "attribut_label": "Pluie",
-        "values": ["Absente", "Intermittente", "Continue"]
-    },
+      "rain": {
+          "type_widget": "select",
+          "required": true,
+          "attribut_label": "Pluie",
+          "values": ["Absente", "Intermittente", "Continue"]
+      },
 
-Il est possible de définir une valeur par défaut pré-selectionnée avec le paramètre ``value`` (exemple : ``"value": "Absente"``).
+  Il est possible de définir une valeur par défaut pré-selectionnée avec le paramètre ``value`` (exemple : ``"value": "Absente"``).
 
-* **radio** : bouton radio pour un choix unique parmi plusieurs possibilités
+  * **radio** : bouton radio pour un choix unique parmi plusieurs possibilités
 
-.. code-block:: json
+  .. code-block:: json
 
-    "beginner": {
-        "type_widget": "radio",
-        "attribut_label": "Débutant",
-        "values": ["Oui", "Non"]
-    },
+      "beginner": {
+          "type_widget": "radio",
+          "attribut_label": "Débutant",
+          "values": ["Oui", "Non"]
+      },
 
-* **taxonomie** : une liste de taxons
+  * **taxonomie** : une liste de taxons
 
-.. code-block:: json
+  .. code-block:: json
 
-    "cd_nom": {
-        "type_widget": "taxonomy",
-        "attribut_label": "Taxon",
-        "type_util": "taxonomy",
-        "required": true,
-        "id_list": "__MODULE.ID_LIST_TAXONOMY"
-    },
+      "cd_nom": {
+          "type_widget": "taxonomy",
+          "attribut_label": "Taxon",
+          "type_util": "taxonomy",
+          "required": true,
+          "id_list": "__MODULE.ID_LIST_TAXONOMY"
+      },
 
-La variable ``"id_list": "__MODULE.ID_LIST_TAXONOMY"`` définit la liste de taxon.
+  La variable ``"id_list": "__MODULE.ID_LIST_TAXONOMY"`` définit la liste de taxon.
 
-Il est important d'ajouter ``"type_util": "taxonomy",``.
+  Il est important d'ajouter ``"type_util": "taxonomy",``.
 
-* **dataset** : une liste de jeux de données
+  * **dataset** : une liste de jeux de données
 
-.. code-block:: json
+  .. code-block:: json
 
-    "id_dataset": {
-        "type_widget": "dataset",
-        "attribut_label": "Jeu de données",
-        "type_util": "dataset",
-        "required": true,
-        "module_code": "__MODULE.MODULE_CODE",
-    },
+      "id_dataset": {
+          "type_widget": "dataset",
+          "attribut_label": "Jeu de données",
+          "type_util": "dataset",
+          "required": true,
+          "module_code": "__MODULE.MODULE_CODE",
+      },
 
-La variable ``"module_code": "__MODULE.MODULE_CODE"`` permet de selectionner uniquement les jeux de données associés au module.
+  La variable ``"module_code": "__MODULE.MODULE_CODE"`` permet de selectionner uniquement les jeux de données associés au module.
 
-Il est important d'ajouter ``"type_util": "dataset",``.
+  Il est important d'ajouter ``"type_util": "dataset",``.
 
 .. raw:: html
 
     </details>
     <br>
 
-- **Les datalists**
+- **Le cas particulier des ``datalists``**
+
+.. raw:: html
+
+    <details>
+    <summary><a>Dépliez pour plus de détails</a></summary>
+    <br>
+
+Pour pouvoir faire des composants de type select à partir d'une API, on peut utiliser le composant ``datalist``.
+
+Les options supplémentaires pour ce widget :
+
+- ``api`` : API qui fournira la liste
+- ``application`` : ``GeoNature`` ou ``TaxHub`` permet de préfixer l'API avec l'URL de l'API de l'application
+- ``keyValue`` : champs renvoyé
+- ``keyLabel`` : champs affiché
+- ``type_util`` : ``nomenclature``, ``dataset``, ``user`` : pour le traitement des données par ailleurs
+- ``data_path`` : si l'API renvoie les données de la forme ``data: [<les données>]`` alors ``data_path = "data"``
+- ``filters`` : permet de filtrer les données reçues (``{field_name: [value1, value2, ...]}``)
+- ``default`` : permet de donner une valeur par defaut (``"default": {"cd_nomenclature": "1"}`` permettra de récupérer le premier objet de la liste qui correspond)
+
+Par exemple :
+  * Nomenclature avec sous-liste et valeur par defaut
+
+    ::
+
+      "id_nomenclature_determination_method": {
+          "type_widget": "datalist",
+          "attribut_label": "Méthode de détermination",
+          "api": "nomenclatures/nomenclature/METH_DETERMIN",
+          "application": "GeoNature",
+          "keyValue": "id_nomenclature",
+          "keyLabel": "label_fr",
+          "data_path": "values",
+          "type_util": "nomenclature",
+          "required": true,
+          "default": {
+              "cd_nomenclature": "1"
+          }
+      },
+
+  * Groupe de sites
+
+    ::
+
+      "id_sites_group": {
+          "type_widget": "datalist",
+          "attribut_label": "Groupe de sites",
+          "hidden": true,
+          "type_util": "sites_group",
+          "keyValue": "id_sites_group",
+          "keyLabel": "sites_group_name",
+          "api": "__MONITORINGS_PATH/list/__MODULE.MODULE_CODE/sites_group?id_module=__MODULE.ID_MODULE&fields=id_sites_group&fields=sites_group_name"",
+          "application": "GeoNature"
+      },
+
+
+  * Utilisateur
+
+    ::
+
+      "observers": {
+        "type_widget": "datalist",
+        "attribut_label": "Observateurs",
+        "api": "users/menu/__MODULE.ID_LIST_OBSERVER",
+        "application": "GeoNature",
+        "keyValue": "id_role",
+        "keyLabel": "nom_complet",
+        "type_util": "user",
+        "multiple": true,
+        "required": true
+      },
+
+.. raw:: html
+
+    </details>
+    <br>
 
 - **Les variables dynamiques**
 
+.. raw:: html
+
+    <details>
+    <summary><a>Dépliez pour plus de détails</a></summary>
+    <br>
+
+Il est possible de définir des paramètre qui peuvent dépendre de plusieurs variables.
+La valeur de ce paramètre est alors une chaîne de caractère qui définie une fonction, qui utilise les variables suivantes
+
+**Ce cas n'est pris en compte que pour les composant spécifique, ou pour les composants redéfinis dans `specific`**
+  * ``value``: les valeur du formulaire
+
+  * ``attribut_name``: du composant concerné
+
+  * ``meta``: un dictionnaire de données additionelles, et fourni au composant dynamicFormGenerator, il peut contenir des données sur
+    * la nomenclature (pour avoir les valeurs des nomenclature à partir des id, ici un dictionnaire avec ``id_nomenclature`` comme clés.
+
+    * ``bChainInput`` si on enchaine les releves
+
+    * etc.. à redéfinir selon les besoin
+
+  La chaine de caractère qui décrit la fonction doit être de la forme suivante:
+
+  ::
+
+    "hidden": "({value, attribut_name, }) => { return value.id == 't' }"
+
+
+  Le format JSON ne permet pas les saut de ligne dans les chaines de caractère,
+  et pour avoir plus de lisibilité, quand la fonction est plus complexe, on peut aussi utiliser un tableau de chaine de caractères :
+
+  ::
+
+      "hidden": [
+          "({value, attribut_name, }) => {",
+          "return value.id == 't'",
+          "}"
+      ]
+
+
+  Le lignes seront coléés entre elles avec l'ajout de saut de lignes (caractère `\n`).
+
+  Il faut être certain de sa fonction.
+
+
+  Exemples :
+
+  * Afficher le composant ``test2`` et le rendre obligatoire seulement si ``test1`` a pour valeur ``t``:
+
+    ::
+
+      "specific": {
+          "test": {
+              "type_widget": "text",
+              "attribut_label": "Test"
+            },
+            "test2": {
+              "type_widget": "text",
+              "attribut_label": "Test 2",
+              "hidden": "({value}) => value.test != 't'",
+              "required": "({value}) => value.test != 't'"
+            }
+      }
+
+  * Ajouter un champs pour renseigner la profondeur d'une grotte si le type de site est une grotte
+
+    ::
+
+      site.json
+
+      "specific": {
+          ...
+          "profondeur_grotte": {
+          "type_widget": "number",
+          "attribut_label": "Profondeur de la grotte",
+          "hidden": "({value, meta}) => meta.nomenclatures[value.id_nomenclature_type_site] || {}).cd_nomenclature !== '1'",
+          "required": "({value, meta}) => (meta.nomenclatures[value.id_nomenclature_type_site] || {}).cd_nomenclature === '1'"
+          }
+          ...
+      }
+
+
+  **Le paramêtre ``value`` ne peut pas être dynamique, pour changer la valeur des variables en fonction d'autres variables, on peut définir ``change`` dans la config. Voir ci dessous**
+
+
+* **La variable ``change``**
+
+  On peut y définir une fonction qui sera appelée chaque fois que le formulaire change.
+
+  Un exemple (``module.json`` du module test):
+
+  ::
+
+      {
+          "module_label":"Test",
+          "module_desc":"Module de test pour le module de suivi générique",
+          "specific": {
+              "test": {
+                  "type_widget": "text",
+                  "attribut_label": "Test"
+              },
+              "test2": {
+                  "type_widget": "text",
+                  "attribut_label": "Test 2 (hidden)",
+                  "hidden": "({value}) => value.test != 't'"
+              },
+              "test3": {
+                  "type_widget": "text",
+                  "attribut_label": "Test 3 (change)"
+              }
+          },
+          "change": [
+              "({objForm, meta}) => {",
+                  "const test3 = '' + (objForm.value.test || '') + '_' + (objForm.value.test2 || '');",
+                  "if (!objForm.controls.test3.dirty) {",
+                      "objForm.patchValue({test3})",
+                  "}",
+              "}",
+              ""
+          ]
+      }
+
+
+  Ici on donne à la variable ``test3`` la valeur ``<test>_<test2>``.
+
+  C'est valable tant que le ``test3`` n'a pas été modifé à la main (i. e. ``objForm.controls.test3.dirty`` n'est pas vrai).
+
+  On peut donc modifer par la suite la valeur de test3 à la main.
+
+  Comme précemment on peut aussi avoir accès à meta.
+
+.. raw:: html
+
+    </details>
+    <br>
+
 - **Redéfinir les champs génériques**
+
+.. raw:: html
+
+    <details>
+    <summary><a>Dépliez pour plus de détails</a></summary>
+    <br>
 
 Il se peut que l'on veut rendre obligatoire ou cacher certain champs génériques qui se rajoutent automatiquement en plus de nos champs spécifiques.
 
@@ -517,6 +736,11 @@ On rajoutera cet élément dans notre variable ``specific`` et cet élément ser
     * le type de nomenclature ``"code_nomenclature_type"`` (correspond au champs mnemonique du type)
 
     * le code de la nomenclature ``"cd_nomenclature"``
+
+.. raw:: html
+
+    </details>
+    <br>
 
 .. IMPORTANT::
 
