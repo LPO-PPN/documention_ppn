@@ -561,7 +561,7 @@ Par exemple :
     <summary><a>Dépliez pour plus de détails</a></summary>
     <br>
 
-Il est possible de définir des paramètre qui peuvent dépendre de plusieurs variables.
+Il est possible de définir des paramètres qui peuvent dépendre de plusieurs variables.
 La valeur de ce paramètre est alors une chaîne de caractère qui définie une fonction, qui utilise les variables suivantes
 
 **Ce cas n'est pris en compte que pour les composant spécifique, ou pour les composants redéfinis dans `specific`**
@@ -753,6 +753,10 @@ Configuration des exports
 
 - **La Vue de synthèse** ``synthese.sql``
 
+Le code SQL de création de la vue de synthèse de votre sous-module doit se mettre dans un fichier `synthese.sql`, et la vue se retrouvera par défaut dans le schéma `gn_monitoring`.
+
+Elle permet d'intégrer les données dans le module SYNTHESE, à l'instar de OCCTAX. Veillez à respecter les mêmes noms de champs que dans la table `gn_synthese.synthese` !
+
 - **Paramétrage des exports** ``module.json``
     Il est possible de configurer des exports (CSV ou PDF).
 
@@ -786,6 +790,7 @@ Configuration des exports
     * placer les fichier de template en ``.html`` (lien symbolique) dans le dossier ``<geonature>/backend/template/modules/monitorings/<module_code>``
 
     * placer les fchiers d'assets dans le dossier static : ``<geonature>/backend/static/external_assets/monitorings/<module_code>/exports/pdf``
+
 
     **CSV**
 
