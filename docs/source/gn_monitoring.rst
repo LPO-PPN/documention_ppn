@@ -356,11 +356,121 @@ Pour définir ses propres variables (ou modifier des variables déjà présentes
     ...
   ]
 
-- **Les variables génériques (par défaut)**
+- **Les différents types de variable**
 
-- **Les variables additionnelles (créées sur mesure)**
+  * **texte** : une variable facultative
+
+    ::
+
+          nom_contact": {
+              "type_widget": "text",
+              "attribut_label": "Nom du contact"
+          }
+
+    * **entier** : exemple avec un numéro du passage compris entre 1 et 2 est obligatoire
+
+    ::
+
+            "num_passage": {
+                "type_widget": "number",
+                "attribut_label": "Numéro de passage",
+                "required": true,
+                "min": 1,
+                "max": 2
+            }
+
+    * **utilisateur** : choix de plusieurs noms d'utilisateurs dans une liste
+
+    ::
+
+            "observers": {
+                "attribut_label": "Observateurs",
+                "type_widget": "observers",
+                "type_util": "user",
+                "code_list": "__MODULE.ID_LIST_OBSERVER",
+            },
+
+    Il est important d'ajouter ``"type_util": "user",``.
+
+    * **nomenclature** : un choix obligatoire parmi une liste définie par un type de nomenclature
+
+    ::
+
+            "id_nomenclature_nature_observation": {
+                "type_widget": "nomenclature",
+                "attribut_label": "Nature de l'observation",
+                "code_nomenclature_type": "OED_NAT_OBS",
+                "required": true,
+                "type_util": "nomenclature"
+            },
+
+    La variable ``"code_nomenclature_type": "OED_NAT_OBS",`` définit le type de nomenclature.
+
+    Il est important d'ajouter ``"type_util": "nomenclature",``.
+
+    * **liste** : une liste déroulante simple, non basée sur une nomenclature
+
+    ::
+
+            "rain": {
+                "type_widget": "select",
+                "required": true,
+                "attribut_label": "Pluie",
+                "values": ["Absente", "Intermittente", "Continue"]
+            },
+
+    Il est possible de définir une valeur par défaut pré-selectionnée avec le paramètre ``value`` (exemple : ``"value": "Absente"``).
+
+    * **radio** : bouton radio pour un choix unique parmi plusieurs possibilités
+
+    ::
+
+            "beginner": {
+                "type_widget": "radio",
+                "attribut_label": "Débutant",
+                "values": ["Oui", "Non"]
+            },
+
+    * **taxonomie** : une liste de taxons
+
+    ::
+
+            "cd_nom": {
+                "type_widget": "taxonomy",
+                "attribut_label": "Taxon",
+                "type_util": "taxonomy",
+                "required": true,
+                "id_list": "__MODULE.ID_LIST_TAXONOMY"
+            },
+
+    La variable ``"id_list": "__MODULE.ID_LIST_TAXONOMY"`` définit la liste de taxon.
+
+    Il est important d'ajouter ``"type_util": "taxonomy",``.
+
+    * **dataset** : une liste de jeux de données
+
+    ::
+
+            "id_dataset": {
+                "type_widget": "dataset",
+                "attribut_label": "Jeu de données",
+                "type_util": "dataset",
+                "required": true,
+                "module_code": "__MODULE.MODULE_CODE",
+            },
+
+    La variable ``"module_code": "__MODULE.MODULE_CODE"`` permet de selectionner uniquement les jeux de données associés au module.
+
+    Il est important d'ajouter ``"type_util": "dataset",``.
 
 - **Les variables dynamiques**
+
+
+.. IMPORTANT::
+
+    **Si les noms de champ sont strictement identiques** aux champs en dur dans les tables du schéma `gn_monitoring`, les données renseignées avec ses champs seront inscrits dans les chamsp correspondants.
+
+    **Dans le cas contraire**, les données seront stockés au format `jsonb` dans le champ ``data`` des tables `t_sites_group`, `t_site_complements`, `t_visit_complements`, `t_observation_complements`, ou `t_observation_details`
 
 Configuration des exports
 ~~~~~~~~~~~~~~~~~~~~~~~~~
