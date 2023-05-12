@@ -194,13 +194,12 @@ On peut également définir dans un fichier toutes les nomenclatures qui devront
     ]
     }
 
-
-¤ Struture type (exemple pour le protocole `Chiro <https://github.com/PnX-SI/protocoles_suivi/tree/master/chiro>`_)
-
 .. raw:: html
 
    <details>
-   <summary><a>Cliquez pour afficher tout le code</a></summary>
+   <summary><a>Cliquez pour afficher tous les exemples</a></summary>
+
+¤ Struture plus complexe (exemple pour le protocole `Chiro <https://github.com/PnX-SI/protocoles_suivi/tree/master/chiro>`_)
 
 .. code-block:: json
 
@@ -273,13 +272,29 @@ On peut également définir dans un fichier toutes les nomenclatures qui devront
 Configuration des niveaux
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Un certain nombre de champs sont obligatoires à renseigner dans chaque table de niveaux.
+
 - **Les Groupes de site** ``group_site.json``
+    Champs obligatoires : id_module
 
 - **Les Sites** ``site.json``
+    Champs obligatoires : base_site_name, geom
+
+    Ne pas oublier de renseigner le type de géométrie employer dans ce fichier
+
+    .. code-block:: json
+
+        {
+        "geometry_type": "Point", # Point, LineString ou Polygon
+        "display_properties": [
+        ...
+        }
 
 - **Les Visites** ``visit.json``
+    Champs obligatoires : id_module, id_dataset, visit_date_min
 
 - **Les Observations** ``observation.json``
+    Champs obligatoires : cd_nom
 
 - **Les Détails d'une observation** ``observation_detail.json``
 
