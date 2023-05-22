@@ -25,6 +25,7 @@ Contents
    linux
    dev_python
    tuto_ref_geo_gn
+   wsl_flask
    gn_monitoring
    tickets_gn_maxime
 
