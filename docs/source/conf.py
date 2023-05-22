@@ -17,6 +17,13 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
     'sphinx.ext.intersphinx',
+    "sphinx.ext.todo",
+    "sphinx.ext.coverage",
+    "sphinx.ext.viewcode",
+    "sphinx.ext.githubpages",
+    "sphinx_copybutton",
+    "sphinxcontrib.youtube",
+    "sphinxcontrib.video"
 ]
 
 intersphinx_mapping = {
