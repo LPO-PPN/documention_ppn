@@ -55,7 +55,7 @@ Encore sur puttygen ;)
     sudo apt upgrade -y # Mise à jour et installation des utilitaires principaux
     sudo apt install ssh # Installer ssh s'il n'existe pas déjà
 
-    sudo chmod 755 /home/<votreutilisateur>/
+    sudo chmod 755 /home/<votreutilisateur>/ # IMPORTANT Garder au moins les permissions [Autre / X] d'activé, sans ça GeoNature ne fonctionnera plus...
     mkdir /home/<votreutilisateur>/.ssh # S'il n'existe pas
     sudo chmod 700 /home/<votreutilisateur>/.ssh
     nano /home/<votreutilisateur>/.ssh/authorized_keys
