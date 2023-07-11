@@ -23,6 +23,7 @@ Une fois ouvert, faire les étapes suivantes :
 .. WARNING::
 
     **PASSPHRASE**
+
     Concernant la passphrase, il s'agit d'un mot de passe qui se veut long, connu seulement de vous-même et A RETENIR ! Il serviera à s'authentifier auprès de la clé publique.
 
 - Finir par cliquer sur le bouton **"Save private key"**. Enregistrer alors le fichier en .ppk où l'on souhaite, avec le nom que l'on souhaite. **=> CECI EST NOTRE CLE PRIVEE**
@@ -72,8 +73,24 @@ Encore sur puttygen ;)
 Utliser la clé privé avec WinSCP
 --------------------------------
 
+- Cliquer sur "Nouveau site"
+- Entrer le nom d'hôte (Adresse ip) et <votreutilisateur> dans Nom d'utilisateur / Protocole de fichier SFTP
+- Cliquer sur le bouton "Avancé"
+- Naviguer dans "SSH" > "Authentification" > "Paramètres d'authentification" > "Fichier de clé privée" : Cliquer sur "..." et pointer sur l'emplacement de notre clé privée
+- Cliquer sur "OK"
+- Ne pas oublier de changer le port si ce n'est plus 22
+- Cliquez sur "Sauver"
+- Enfin, connectons-nous !
+
 Utliser la clé privé avec PuTTy
 -------------------------------
+
+- Entrer le nom d'hôte (Adresse ip) et le port si autre que 22 / Connection type SSH
+- Entrer un nom pour identifier la connexion dans "Saved Sessions"
+- Naviguer dans "Connection" et entrer <votreutilisateur> dans "Logical name of remote host"
+- Naviguer ensuite dans "Connection" > "SSH" > "Auth" : Cliquer sur le bouton "Browse..." et pointer sur l'emplacement de notre clé privée
+- Revenir sur "Session" et cliquer sur le bouton "Save" (nous avons enregistrer notre configuration)
+- Enfin, connectons-nous avec "Open" !
 
 Utliser la clé privé avec DBeaver
 ---------------------------------
