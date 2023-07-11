@@ -23,6 +23,7 @@ Contents
    geonature_admin
    mergin_maps_admin
    linux
+   cles_ssh
    dev_python
    tuto_ref_geo_gn
    wsl_flask
