@@ -61,6 +61,8 @@ Encore sur puttygen ;)
     # Clique-droit pour coller votre clé publique, puis Ctrl+S, puis Ctrl+X
     sudo chmod 600 /home/<votreutilisateur>/.ssh/authorized_keys
 
+    sudo systemctl restart sshd
+
 .. IMPORTANT::
 
     SSH est très pointilleux sur les permissions, d'où la redefinission des permissions sur notre dossier utilisateur.
