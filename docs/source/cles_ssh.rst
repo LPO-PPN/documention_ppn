@@ -94,3 +94,7 @@ Utliser la clé privé avec PuTTy
 
 Utliser la clé privé avec DBeaver
 ---------------------------------
+
+
+Utliser la clé privé avec VSCode
+--------------------------------
