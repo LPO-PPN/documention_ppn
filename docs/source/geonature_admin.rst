@@ -313,3 +313,128 @@ Pour conserver le bon affichage lors de l'édition des données, renseignez l'an
 .. NOTE::
 
   NOTA BENE : Les taches automatisées sont désormais gérées par Celery Beat et installées avec GeoNature. Si vous aviez mis en place des crons pour mettre à jour les profils de taxons (ou les données du module Dashboard, ou les exports planifiés du module Export), supprimez les (dans ``/etc/cron.d/geonature`` ou ``crontab -e``) car ils ne sont plus utiles
+
+
+
+Montée en version GeoNature 2.12.3 vers GeoNature 2.13.0, par @maximetoma
+-------------------------------------------------------------------------
+
+1/ Téléchargement de Export, Dashboard et Monitoring
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Mettre à jour les modules Export en version 1.4.0, Dashboard en version 1.3.0 (ou plus) et Monitoring en version 0.5.0 (ou plus) avec la nouvelle procédure consistant uniquement à télécharger, dézipper et renommer les dossiers des modules et de leur configuration
+
+::
+
+  # MONITORINGS
+  cd
+  wget https://github.com/PnX-SI/gn_module_monitoring/archive/0.7.0.zip
+  unzip 0.7.0.zip
+  rm 0.7.0.zip
+  mv /home/`whoami`/gn_module_monitoring /home/`whoami`/gn_module_monitoring_old
+  mv /home/`whoami`/gn_module_monitoring-0.7.0 /home/`whoami`/gn_module_monitoring
+  cp -RT ~/gn_module_monitoring_old/contrib/  ~/gn_module_monitoring/contrib/
+  # ATTENTION ---> Vérifier que le README et le .git on été copiés ! Important pour la dépot GitHub SEP
+  # rsync -av /home/`whoami`/gn_module_monitoring_old/config/monitoring/ /home/`whoami`/gn_module_monitoring/config/monitoring/ --exclude=generic
+  
+  # EXPORTS
+  cd
+  wget https://github.com/PnX-SI/gn_module_export/archive/1.6.0.zip
+  unzip 1.6.0.zip
+  rm 1.6.0.zip
+  mv /home/`whoami`/gn_module_export /home/`whoami`/gn_module_export_old
+  mv /home/`whoami`/gn_module_export-1.6.0 /home/`whoami`/gn_module_export
+  # Le dossier de stockage des exports a été modifié de geonature/backend/static/exports/ à geonature/backend/media/exports/.
+  # La configuration Apache fournie avec GeoNature 2.12 sert directement le dossier media sans passer par gunicorn.
+  # Si vous aviez modifié votre configuration spécifiquement pour le module d’export, il est recommandé de retirer cette partie spécifique au profit de la configuration générique de GeoNature
+  
+  # DASHBOARD
+  cd
+  wget https://github.com/PnX-SI/gn_module_dashboard/archive/1.4.0.zip
+  unzip 1.4.0.zip
+  rm 1.4.0.zip
+  mv /home/`whoami`/gn_module_dashboard /home/`whoami`/gn_module_dashboard_old
+  mv /home/`whoami`/gn_module_dashboard-1.4.0 /home/`whoami`/gn_module_dashboard
+
+
+2/ TaxHub
+~~~~~~~~~
+
+::
+
+    cd
+    wget https://github.com/PnX-SI/TaxHub/archive/1.12.0.zip
+    unzip 1.12.0.zip
+    rm 1.12.0.zip
+    mv taxhub taxhub_old
+    mv TaxHub-1.12.0/ taxhub
+
+    cp taxhub_old/settings.ini taxhub/settings.ini
+    cp taxhub_old/apptax/config.py taxhub/apptax/config.py
+    cp taxhub_old/static/app/constants.js taxhub/static/app/constants.js
+
+    cp -aR taxhub_old/static/medias/ taxhub/static/
+
+    cd taxhub
+    ./install_app.sh
+
+3/ UsersHub
+~~~~~~~~~
+
+- RAS – 2.3.4 déjà installée
+
+
+4/ GeoNature
+~~~~~~~~~~~~
+
+- Mettre à jour GeoNature
+
+::
+
+  cd
+  wget https://github.com/PnX-SI/GeoNature/archive/2.13.0.zip
+  unzip 2.13.0.zip
+  rm 2.13.0.zip
+  mv /home/`whoami`/geonature/ /home/`whoami`/geonature_old/
+  mv GeoNature-2.13.0 /home/`whoami`/geonature/
+  cd geonature
+
+  ./install/migration/migration.sh
+
+  # Lancer la commande pour rafraichir les images monitorings
+  source backend/venv/bin/activate
+  geonature monitorings process_img
+
+- Relancer les services (optionnel)
+
+::
+
+  sudo systemctl start geonature
+  sudo systemctl restart geonature-worker
+  sudo systemctl restart usershub
+  sudo systemctl restart taxhub
+
+
+5/ NOTA BENE
+~~~~~~~~~~~~
+
+.. NOTE::
+
+  NOTA BENE : Les permissions existantes sur vos différents groupes et utilisateurs sont récupérées et remises à plat automatiquement sans système d'héritage. Vérifiez cependant les permissions après la mise à jour de vos groupes et utilisateurs.
+
+
+.. NOTE::
+
+  NOTA BENE : Désormais, quand vous installerez un nouveau module (ou sous-module), pour le voir affiché dans le menu et y avoir accès, il faudra lui appliquer des permissions aux groupes ou utilisateurs qui doivent y accéder.
+
+
+6/ Monitoring et permissions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Si elle est renseignée dans la configuration de vos sous-modules, la variable permission_objects est à déplacer du fichier module.json au fichier config.json de ces sous-modules
+- Après mise à jour du module, utiliser la commande pour générer les permissions disponibles pour les sous-modules déjà installés  ``geonature monitorings update_module_available_permissions``
+
+  
+.. NOTE::
+
+  Réadapter les permissions comme suit :
