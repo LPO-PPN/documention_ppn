@@ -42,8 +42,8 @@ Installer le module Modulator
 
 .. WARNING::
 
-    Il faut vérifier que le dossier `/home/geonatureadmin/gn_modulator/config/modules/contrib/` existe, et que les liens symboliques vers les sous-modules existent si l'on développe dans le dossier `contrib`.
-    Dans le cas contraire, effectuer les commandes suivantes : `mkdir /home/geonatureadmin/gn_modulator/config/modules/contrib/` puis `ln -s /home/geonatureadmin/gn_modulator/contrib/* /home/geonatureadmin/gn_modulator/config/modules/contrib/`.
+    Il faut vérifier que le dossier ``/home/geonatureadmin/gn_modulator/config/modules/contrib/`` existe, et que les liens symboliques vers les sous-modules existent si l'on développe dans le dossier ``contrib``.
+    Dans le cas contraire, effectuer les commandes suivantes : ``mkdir /home/geonatureadmin/gn_modulator/config/modules/contrib/`` puis ``ln -s /home/geonatureadmin/gn_modulator/contrib/* /home/geonatureadmin/gn_modulator/config/modules/contrib/``.
 
 --------------------
 Créer un sous-module
