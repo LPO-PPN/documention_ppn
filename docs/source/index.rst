@@ -28,6 +28,7 @@ Contents
    tuto_ref_geo_gn
    wsl_flask
    gn_monitoring
+   gn_modulator
    tickets_gn_maxime
 
 Contributeurs :
