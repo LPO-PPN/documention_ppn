@@ -53,6 +53,7 @@ Vérifier que le sous-module "m_sipaf" est présent dans le dossier ``/home/geon
 Exécuter les commandes suivantes : 
 
 ::
+
     source ~/geonature/backend/venv/bin/activate
     # Installation du sous-module SIPAF
     geonature modulator install m_sipaf
