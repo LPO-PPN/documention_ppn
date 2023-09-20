@@ -54,13 +54,10 @@ Exécuter les commandes suivantes :
 
 ::
     source ~/geonature/backend/venv/bin/activate
-
     # Installation du sous-module SIPAF
     geonature modulator install m_sipaf
-    
     # Import du ref_geo linéaire des routes
     geonature modulator import -i ref_geo.route -d  <data_dir_path> # trouver où est le fichier ...
-    
     # Import des données des passages à faune (v5 pour l'exemple)
     geonature modulator import -i m_sipaf.pf_V1 -d  <data_dir_path> # trouver où est le fichier ...
 
