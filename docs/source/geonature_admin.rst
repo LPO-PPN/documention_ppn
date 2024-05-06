@@ -438,3 +438,142 @@ Montée en version GeoNature 2.12.3 vers GeoNature 2.13.0, par @maximetoma
 .. NOTE::
 
   Réadapter les permissions comme suit :
+
+
+Montée en version GeoNature 2.13.3 vers GeoNature 2.14.1, par @maximetoma
+-------------------------------------------------------------------------
+
+1/ TaxHub et UsersHub
+~~~~~~~~~~~~~~~~~~~~~
+
+- Mettre à jour les modules TaxHub (> 1.13.3) et UsersHub (> 2.4.0), dont une MAJ de TaxRef v16 vers v17
+
+::
+
+  # USERSHUB
+  cd
+  wget https://github.com/PnX-SI/UsersHub/archive/2.4.2.zip
+  unzip 2.4.2.zip
+  rm 2.4.2.zip
+  mv /home/`whoami`/usershub/ /home/`whoami`/usershub_old/
+  mv UsersHub-2.4.2 /home/`whoami`/usershub/
+
+  cp /home/`whoami`/usershub_old/config/config.py /home/`whoami`/usershub/config/config.py
+  cp /home/`whoami`/usershub_old/config/settings.ini /home/`whoami`/usershub/config/settings.ini
+
+  # Attention si vous avez modifiez certains paramètres dans le fichier config.py tels que les paramètres de connexion à la base de données, ils seront écrasés par les paramètres présent dans le fichier settings.ini
+
+  cd usershub
+  ./install_app.sh
+  
+  # TAXHUB 1.14.0
+  cd
+  wget https://github.com/PnX-SI/TaxHub/archive/1.14.0.zip
+  unzip 1.14.0.zip
+  rm 1.14.0.zip
+  mv /home/`whoami`/taxhub/ /home/`whoami`/taxhub_old/
+  mv TaxHub-1.14.0 /home/`whoami`/taxhub/
+
+  cp taxhub_old/settings.ini taxhub/settings.ini
+  cp taxhub_old/apptax/config.py taxhub/apptax/config.py
+  cp taxhub_old/static/app/constants.js taxhub/static/app/constants.js
+
+  cp -aR taxhub_old/static/medias/ taxhub/static/
+
+  cd taxhub
+  ./install_app.sh
+
+
+2/ Téléchargement de Export, Dashboard et Monitoring
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Mettre à jour les modules Export en version 1.7.0, Dashboard en version 1.5.0 (ou plus) et Monitoring en version 0.7.2 (ou plus) avec la nouvelle procédure consistant uniquement à télécharger, dézipper et renommer les dossiers des modules et de leur configuration
+
+::
+
+  # MONITORINGS
+  cd
+  wget https://github.com/PnX-SI/gn_module_monitoring/archive/0.7.3.zip
+  unzip 0.7.3.zip
+  rm 0.7.3.zip
+
+  mv /home/`whoami`/gn_module_monitoring /home/`whoami`/gn_module_monitoring_old
+  mv /home/`whoami`/gn_module_monitoring-0.7.3 /home/`whoami`/gn_module_monitoring
+
+  cp -RT ~/gn_module_monitoring_old/contrib/  ~/gn_module_monitoring/contrib/
+  cp -R ~/gn_module_monitoring_old/config/monitoring/* ~/geonature/backend/media/monitorings
+  rm -R ~/geonature/backend/media/monitorings/generic
+
+  # ATTENTION ---> Vérifier que le README et le .git on été copiés ! Important pour la dépot GitHub SEP
+  # rsync -av /home/`whoami`/gn_module_monitoring_old/config/monitoring/ /home/`whoami`/gn_module_monitoring/config/monitoring/ --exclude=generic
+  
+  # EXPORTS
+  cd
+  wget https://github.com/PnX-SI/gn_module_export/archive/1.6.0.zip
+  unzip 1.7.0.zip
+  rm 1.7.0.zip
+
+  mv /home/`whoami`/gn_module_export /home/`whoami`/gn_module_export_old
+  mv /home/`whoami`/gn_module_export-1.7.0 /home/`whoami`/gn_module_export
+
+  # Le dossier de stockage des exports a été modifié de geonature/backend/static/exports/ à geonature/backend/media/exports/.
+  # La configuration Apache fournie avec GeoNature 2.12 sert directement le dossier media sans passer par gunicorn.
+  # Si vous aviez modifié votre configuration spécifiquement pour le module d’export, il est recommandé de retirer cette partie spécifique au profit de la configuration générique de GeoNature
+  
+  # DASHBOARD
+  cd
+  wget https://github.com/PnX-SI/gn_module_dashboard/archive/1.5.0.zip
+  unzip 1.5.0.zip
+  rm 1.5.0.zip
+
+  mv /home/`whoami`/gn_module_dashboard /home/`whoami`/gn_module_dashboard_old
+  mv /home/`whoami`/gn_module_dashboard-1.5.0 /home/`whoami`/gn_module_dashboard
+
+
+3/ GeoNature
+~~~~~~~~~~~~
+
+.. WARNING::
+
+  Les paramètres de la synthèse permettant de spécifier le nom de certaines colonnes de la vue d'export sont dépréciés (``EXPORT_ID_SYNTHESE_COL``, ``EXPORT_ID_DIGITISER_COL``, ``EXPORT_OBSERVERS_COL``, ``EXPORT_GEOJSON_4326_COL``, ``EXPORT_GEOJSON_LOCAL_COL``).
+
+.. WARNING::
+
+  Si vous aviez surcouché la vue par défaut ``gn_synthese.v_synthese_for_export``, il est recommandé de ne plus le faire et de plutôt utiliser le nouveau paramètre ``EXPORT_OBSERVATIONS_CUSTOM_VIEWS`` permettant de se créer ses propres vues d'export personnalisées. Voir "Export des observations" dans la documentation du module Synthèse (https://docs.geonature.fr/admin-manual.html#module-synthese)
+
+
+- Mettre à jour GeoNature
+
+::
+
+  cd
+  wget https://github.com/PnX-SI/GeoNature/archive/2.14.1.zip
+  unzip 2.14.1.zip
+  rm 2.14.1.zip
+  mv /home/`whoami`/geonature/ /home/`whoami`/geonature_old/
+  mv GeoNature-2.14.1 /home/`whoami`/geonature/
+  cd geonature
+
+  ./install/migration/migration.sh
+
+- Lancer la commande pour rafraichir les images monitorings
+
+::
+
+  source backend/venv/bin/activate
+  geonature monitorings process_img
+
+- Relancer les services (optionnel)
+
+::
+
+  sudo systemctl start geonature
+  sudo systemctl restart geonature geonature-worker usershub taxhub apache2
+
+
+4/ MAJ TaxRef v17
+~~~~~~~~~~~~~~~~~
+
+.. IMPORTANT::
+
+  VOIR SI TAXREF SE MET A JOUR AUTOMATIQUEMENT
