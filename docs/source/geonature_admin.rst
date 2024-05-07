@@ -443,6 +443,12 @@ Montée en version GeoNature 2.12.3 vers GeoNature 2.13.0, par @maximetoma
 Montée en version GeoNature 2.13.3 vers GeoNature 2.14.1, par @maximetoma
 -------------------------------------------------------------------------
 
+Lancer la maintenance : 
+
+::
+
+  sudo a2dissite geonature && sudo a2ensite geonature_maintenance && sudo apachectl restart
+
 1/ TaxHub et UsersHub
 ~~~~~~~~~~~~~~~~~~~~~
 
@@ -450,38 +456,25 @@ Montée en version GeoNature 2.13.3 vers GeoNature 2.14.1, par @maximetoma
 
 ::
 
-  # USERSHUB
+  # USERSHUB / TAXHUB
   cd
-  wget https://github.com/PnX-SI/UsersHub/archive/2.4.2.zip
-  unzip 2.4.2.zip
-  rm 2.4.2.zip
-  mv /home/`whoami`/usershub/ /home/`whoami`/usershub_old/
-  mv UsersHub-2.4.2 /home/`whoami`/usershub/
+  wget https://github.com/PnX-SI/UsersHub/archive/2.4.2.zip && wget https://github.com/PnX-SI/TaxHub/archive/1.14.0.zip
+  unzip 2.4.2.zip && unzip 1.14.0.zip
+  rm 2.4.2.zip && rm 1.14.0.zip
 
-  cp /home/`whoami`/usershub_old/config/config.py /home/`whoami`/usershub/config/config.py
-  cp /home/`whoami`/usershub_old/config/settings.ini /home/`whoami`/usershub/config/settings.ini
+  mv /home/`whoami`/usershub/ /home/`whoami`/usershub_old/ && mv UsersHub-2.4.2 /home/`whoami`/usershub/
+  mv /home/`whoami`/taxhub/ /home/`whoami`/taxhub_old/ && mv TaxHub-1.14.0 /home/`whoami`/taxhub/
+
+  cp /home/`whoami`/usershub_old/config/config.py /home/`whoami`/usershub/config/config.py && cp /home/`whoami`/usershub_old/config/settings.ini /home/`whoami`/usershub/config/settings.ini
+  cp taxhub_old/settings.ini taxhub/settings.ini && cp taxhub_old/apptax/config.py taxhub/apptax/config.py && cp taxhub_old/static/app/constants.js taxhub/static/app/constants.js && cp -aR taxhub_old/static/medias/ taxhub/static/
 
   # Attention si vous avez modifiez certains paramètres dans le fichier config.py tels que les paramètres de connexion à la base de données, ils seront écrasés par les paramètres présent dans le fichier settings.ini
 
-  cd usershub
-  ./install_app.sh
-  
-  # TAXHUB 1.14.0
-  cd
-  wget https://github.com/PnX-SI/TaxHub/archive/1.14.0.zip
-  unzip 1.14.0.zip
-  rm 1.14.0.zip
-  mv /home/`whoami`/taxhub/ /home/`whoami`/taxhub_old/
-  mv TaxHub-1.14.0 /home/`whoami`/taxhub/
+  cd usershub && ./install_app.sh
 
-  cp taxhub_old/settings.ini taxhub/settings.ini
-  cp taxhub_old/apptax/config.py taxhub/apptax/config.py
-  cp taxhub_old/static/app/constants.js taxhub/static/app/constants.js
+  cd && cd taxhub && ./install_app.sh
 
-  cp -aR taxhub_old/static/medias/ taxhub/static/
-
-  cd taxhub
-  ./install_app.sh
+  sudo systemctl start usershub && sudo systemctl start taxhub
 
 
 2/ Téléchargement de Export, Dashboard et Monitoring
@@ -491,44 +484,21 @@ Montée en version GeoNature 2.13.3 vers GeoNature 2.14.1, par @maximetoma
 
 ::
 
-  # MONITORINGS
+  # MONITORINGS / EXPORTS / DASHBOARD
   cd
-  wget https://github.com/PnX-SI/gn_module_monitoring/archive/0.7.3.zip
-  unzip 0.7.3.zip
-  rm 0.7.3.zip
+  wget https://github.com/PnX-SI/gn_module_monitoring/archive/0.7.3.zip && wget https://github.com/PnX-SI/gn_module_export/archive/1.7.0.zip && wget https://github.com/PnX-SI/gn_module_dashboard/archive/1.5.0.zip
+  unzip 0.7.3.zip && unzip 1.7.0.zip && unzip 1.5.0.zip
+  rm 0.7.3.zip && rm 1.7.0.zip && rm 1.5.0.zip
 
-  mv /home/`whoami`/gn_module_monitoring /home/`whoami`/gn_module_monitoring_old
-  mv /home/`whoami`/gn_module_monitoring-0.7.3 /home/`whoami`/gn_module_monitoring
+  mv /home/`whoami`/gn_module_monitoring /home/`whoami`/gn_module_monitoring_old && mv /home/`whoami`/gn_module_monitoring-0.7.3 /home/`whoami`/gn_module_monitoring
+  mv /home/`whoami`/gn_module_export /home/`whoami`/gn_module_export_old && mv /home/`whoami`/gn_module_export-1.7.0 /home/`whoami`/gn_module_export
+  mv /home/`whoami`/gn_module_dashboard /home/`whoami`/gn_module_dashboard_old && mv /home/`whoami`/gn_module_dashboard-1.5.0 /home/`whoami`/gn_module_dashboard
 
   cp -RT ~/gn_module_monitoring_old/contrib/  ~/gn_module_monitoring/contrib/
-  cp -R ~/gn_module_monitoring_old/config/monitoring/* ~/geonature/backend/media/monitorings
-  rm -R ~/geonature/backend/media/monitorings/generic
 
   # ATTENTION ---> Vérifier que le README et le .git on été copiés ! Important pour la dépot GitHub SEP
   # rsync -av /home/`whoami`/gn_module_monitoring_old/config/monitoring/ /home/`whoami`/gn_module_monitoring/config/monitoring/ --exclude=generic
   
-  # EXPORTS
-  cd
-  wget https://github.com/PnX-SI/gn_module_export/archive/1.6.0.zip
-  unzip 1.7.0.zip
-  rm 1.7.0.zip
-
-  mv /home/`whoami`/gn_module_export /home/`whoami`/gn_module_export_old
-  mv /home/`whoami`/gn_module_export-1.7.0 /home/`whoami`/gn_module_export
-
-  # Le dossier de stockage des exports a été modifié de geonature/backend/static/exports/ à geonature/backend/media/exports/.
-  # La configuration Apache fournie avec GeoNature 2.12 sert directement le dossier media sans passer par gunicorn.
-  # Si vous aviez modifié votre configuration spécifiquement pour le module d’export, il est recommandé de retirer cette partie spécifique au profit de la configuration générique de GeoNature
-  
-  # DASHBOARD
-  cd
-  wget https://github.com/PnX-SI/gn_module_dashboard/archive/1.5.0.zip
-  unzip 1.5.0.zip
-  rm 1.5.0.zip
-
-  mv /home/`whoami`/gn_module_dashboard /home/`whoami`/gn_module_dashboard_old
-  mv /home/`whoami`/gn_module_dashboard-1.5.0 /home/`whoami`/gn_module_dashboard
-
 
 3/ GeoNature
 ~~~~~~~~~~~~
@@ -546,34 +516,133 @@ Montée en version GeoNature 2.13.3 vers GeoNature 2.14.1, par @maximetoma
 
 ::
 
-  cd
-  wget https://github.com/PnX-SI/GeoNature/archive/2.14.1.zip
-  unzip 2.14.1.zip
-  rm 2.14.1.zip
-  mv /home/`whoami`/geonature/ /home/`whoami`/geonature_old/
-  mv GeoNature-2.14.1 /home/`whoami`/geonature/
-  cd geonature
+  cd && wget https://github.com/PnX-SI/GeoNature/archive/2.14.1.zip && unzip 2.14.1.zip && rm 2.14.1.zip
+  mv /home/`whoami`/geonature/ /home/`whoami`/geonature_old/ && mv GeoNature-2.14.1 /home/`whoami`/geonature/
 
-  ./install/migration/migration.sh
+  cd geonature && ./install/migration/migration.sh
 
 - Lancer la commande pour rafraichir les images monitorings
 
 ::
 
-  source backend/venv/bin/activate
-  geonature monitorings process_img
+  source backend/venv/bin/activate && geonature monitorings process_all && cd
 
 - Relancer les services (optionnel)
 
 ::
 
-  sudo systemctl start geonature
-  sudo systemctl restart geonature geonature-worker usershub taxhub apache2
+  sudo systemctl start geonature && sudo systemctl restart geonature geonature-worker usershub taxhub apache2 && cd
+
+
+.. IMPORTANT::
+
+  J'ai eu une erreur 500 sur https://sep-geonature.reserves-naturelles.org/api/synthese/for_web?limit=100&format=ungrouped_geom
+  CRASH du module SYNTHESE
+
+  Résolution : changement dans ma config de GeoNature
+
+  ::
+
+    [SYNTHESE]
+      AREA_FILTERS = [
+          { label = "Communes", type_code = "COM" },
+          { label = "Réserves Naturelles", type_code = ["RNN","RNR"] },
+        ]
+
+      LIST_COLUMNS_FRONTEND = [
+            { prop = "nom_vern_or_lb_nom", name = "Taxon" },
+            { prop = "count_min_max", name = "Effectif" },
+            { prop = "date_min", name = "Date début" },
+            { prop = "observers", name = "Observateurs" },
+            { prop = "dataset_name", name = "Jeu de données" }
+        ]
+
+        ADDITIONAL_COLUMNS_FRONTEND = [
+            { prop = "lb_nom", name = "Nom scientifique" },
+        ]
+
+  J'ai eu un soucis avec l'afficahge de mes sous-module monitoring -> pb de permissions ???
+
+  ``La gestion des permissions est définie pour chaque objet (module, site, visite) et l'objet ALL n'est plus pris en compte (#249). De fait les paramètres cruved des fichiers de configuration ainsi que permission object de module.json sont obsolètes.``
+
+  Re-définition de toutes les permissions de tous les sous-modules...
 
 
 4/ MAJ TaxRef v17
 ~~~~~~~~~~~~~~~~~
 
-.. IMPORTANT::
+.. WARNING::
 
-  VOIR SI TAXREF SE MET A JOUR AUTOMATIQUEMENT
+  La migration d'une version de Taxref est une opération conséquente. Ce script permet d'automatiser au maximum les opérations, mais certaines parties reviennent à l'administrateur de données et il est important de comprendre les différentes étapes.
+
+.. WARNING::
+
+  Il est important aussi de faire une sauvegarde avant de réaliser ces opérations et de faire des tests et vérifications des données au fur et à mesure et à la fin des opérations.
+
+Application des évolutions du schéma taxonomie :
+
+::
+
+  cd && source geonature/backend/venv/bin/activate && geonature db autoupgrade
+
+.. INFORMATION::
+
+  Le passage vers une nouvelle version de Taxref se fait en 2 étapes, disponibles sous forme de commandes python.
+
+  Un export des changements est réalisé à l'issue du script, dans le fichier liste_changements.csv.
+
+  Ce script réalise les opérations suivantes :
+
+  - Télécharge la version de Taxref et l'importe dans les tables taxonomie.import_taxref, taxonomie.cdnom_disparu
+  - Analyse des données dans la Synthèse de GeoNature et identification de celles dont le cd_nom a disparu dans la nouvelle version de Taxref (listés dans le fichier liste_cd_nom_disparus_synthese.csv)
+  - Insertion des cd_noms de remplacement de ceux ayant disparus dans bib_noms, si non déjà présents
+  - Identification des cd_noms ayant disparu dans la table taxonomie.bib_noms
+  - Liste des cd_nom supprimés de taxonomie.bib_noms dans le fichier liste_cd_nom_disparus_bib_noms.csv
+  - Détection et export des changements à venir dans le schéma temporaire tmp_taxref_changes et sa table comp_grap
+  - Liste dans le fichier liste_changements.csv les changements qui vont être réalisés (et leur nombre dans le fichier nb_changements.csv) et les potentiels conflits qu'il faut résoudre en amont
+
+Importer TaxRef v17
+
+::
+
+  cd && cd taxhub && source venv/bin/activate
+  flask taxref migrate-to-v17 import-taxref-v17 # Import de TaxRef
+
+.. WARNING::
+
+  Analysez les fichiers CSV générés dans le dossier tmp. Réalisez les corrections de données en fonction :
+
+  - Répercuter les conséquences des cd_noms disparus sur les données de GeoNature (Synthèse, Occtax et éventuelles autres sources).
+  - Gérer les attributs en conflit (cd_nom mergés et attributs incohérents)
+  - Gérer les éventuels splits
+  - Vérifier les éventuels taxons locaux (Hors Taxref) si ils ont été ajoutés dans la nouvelle version de Taxref
+
+  Toutes ces opérations peuvent être regroupés dans un fichier SQL exécuté dans le script d'application des mises à jour.
+
+Test des changements qui seront réalisés lors de la migration vers TaxRef v17
+
+::
+
+  flask taxref migrate-to-v17 test-changes-detection --keep-cdnom
+
+Application des modifications dues au changement de Taxref
+
+::
+
+  flask taxref migrate-to-v17 apply-changes --keep-cdnom
+  flask taxref link-bdc-statut-to-areas
+
+  deactivate && cd && source geonature/backend/venv/bin/activate && geonature sensitivity refresh-rules-cache # MISE A JOUR DES REGLES DE SENSIBILITE
+
+
+.. INFORMATION::
+
+  Le script ne peut s'exécuter entièrement que s'il n'y a plus de conflits. Le script vous indiquera les éventuelles corrections restant à faire. Les différents fichiers CSV du dossier tmp seront mis à jour par ce script, ainsi qu'un fichier complémentaire ``liste_donnees_cd_nom_manquant.csv``
+
+  Informations complémentaires : https://github.com/PnX-SI/TaxHub/tree/master/apptax/taxonomie/commands/migrate_taxref
+
+Mettre fin à la maintenance : 
+
+::
+
+  sudo a2dissite geonature_maintenance && sudo a2ensite geonature && sudo apachectl restart
